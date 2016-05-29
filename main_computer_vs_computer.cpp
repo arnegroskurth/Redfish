@@ -35,7 +35,7 @@ int main() {
 
         std::cout << "\x1B[2J\x1B[H" << mastHead << board;
 
-        Engine engine(&board, 6);
+        Engine engine(&board, 5);
 
         board.applyMove(engine.getBestMove());
     }

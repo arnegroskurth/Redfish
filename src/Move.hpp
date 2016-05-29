@@ -22,6 +22,7 @@
 
 #include "Constants.hpp"
 #include "Misc.hpp"
+#include "PositionMath.hpp"
 
 
 struct Move {
@@ -34,14 +35,19 @@ struct Move {
 
 
     Move() {}
-    Move(const Move &other) {
+    FORCE_INLINE Move(const Move &other) {
 
         movingPieceType = other.movingPieceType;
         capturedPieceType = other.capturedPieceType;
         fromSq0x88 = other.fromSq0x88;
         toSq0x88 = other.toSq0x88;
     }
+
+
+    friend std::ostream& operator<< (std::ostream& out, const Move &move) {
+
+        out << algebraicByMask8x8(mask8x8BySq0x88(move.fromSq0x88)) << ":" << algebraicByMask8x8(mask8x8BySq0x88(move.toSq0x88));
+
+        return out;
+    }
 };
-
-
-extern std::ostream& operator<< (std::ostream& out, const Move &move);

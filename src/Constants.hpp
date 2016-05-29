@@ -72,6 +72,9 @@ enum Player : uint8_t {
 const uint8_t playerMask = 0b00011000;
 
 
+/**
+ * Some macros to extract basic information about a given piece.
+ */
 #define PIECE_TYPE(X) (static_cast<PieceType>(pieceTypeMask & X))
 #define IS_PAWN(X) (PieceType::PAWN == (pieceTypeMask & X))
 #define IS_KNIGHT(X) (PieceType::KNIGHT == (pieceTypeMask & X))
@@ -123,9 +126,17 @@ enum DirectionDelta0x88 : uint8_t {
 #define SET_BITS_8(X) (__builtin_popcount(X))
 
 
-#define FORCE_INLINE __attribute__((__always_inline__))
+/**
+ * Every inlined function gets inlined with this statement
+ */
+#define FORCE_INLINE __attribute__((__always_inline__)) inline
+#define UNROLL_LOOPS __attribute__((optimize("unroll-loops")))
+#define HOT __attribute__ ((hot))
 
 
+/**
+ * Headline that gets shown on startup
+ */
 const std::string mastHead =
     "Redfish Copyright (C) 2016 Arne Groskurth.\n"
     "(Licensed under the GNU General Public License v3.0.)\n\n";

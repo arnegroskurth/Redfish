@@ -19,8 +19,6 @@
 #include <iostream>
 
 #include "src/Board.hpp"
-#include "src/Misc.hpp"
-#include "src/Move.hpp"
 #include "src/MoveGenerator.hpp"
 
 

@@ -22,6 +22,10 @@
 
 #pragma once
 
+#include <limits>
+
+#include "Board.hpp"
+#include "Constants.hpp"
 #include "Evaluation.hpp"
 #include "Move.hpp"
 #include "MoveGenerator.hpp"
@@ -31,7 +35,7 @@ class Engine {
 
 protected:
 
-    Evaluation evaluation;
+    Evaluation _evaluation;
 
     Board *_initialBoard;
     uint8_t _initialDepth;
@@ -39,13 +43,87 @@ protected:
     Move _bestMove;
 
 
-    void findBestMove();
+    /**
+     * Initial call to finding
+     */
+    FORCE_INLINE void findBestMove() {
+
+        Engine::max(_initialBoard, _initialDepth, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
+    }
+
 
     /**
      * Alpha-Beta-Pruning
      */
-    int64_t max(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta);
-    int64_t min(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta);
+    HOT int64_t max(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
+
+        MoveGenerator moveGenerator;
+        Board nextBoard;
+        auto maxValue = alpha;
+
+        if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
+
+            return _evaluation.evaluate(currentBoard);
+        }
+
+        while(!moveGenerator.empty()) {
+
+            new (&nextBoard) Board(*currentBoard);
+            nextBoard.applyMove(*moveGenerator);
+
+            auto minValue = Engine::min(&nextBoard, depth - 1, maxValue, beta);
+
+            if(minValue > maxValue) {
+
+                maxValue = minValue;
+
+                // beta cutoff
+                if(maxValue >= beta) break;
+
+                if(depth == _initialDepth) {
+
+                    new (&_bestMove) Move(*moveGenerator);
+                }
+            }
+
+            ++moveGenerator;
+        }
+
+        return maxValue;
+    }
+
+
+    HOT int64_t min(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
+
+        MoveGenerator moveGenerator;
+        Board nextBoard;
+        auto minValue = beta;
+
+        if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
+
+            return _evaluation.evaluate(currentBoard);
+        }
+
+        while(!moveGenerator.empty()) {
+
+            new (&nextBoard) Board(*currentBoard);
+            nextBoard.applyMove(*moveGenerator);
+
+            auto maxValue = Engine::max(&nextBoard, depth - 1, alpha, minValue);
+
+            if(maxValue < minValue) {
+
+                minValue = maxValue;
+
+                // alpha cutoff
+                if(minValue <= alpha) break;
+            }
+
+            ++moveGenerator;
+        }
+
+        return minValue;
+    }
 
 
 public:
@@ -54,12 +132,12 @@ public:
 
         _initialBoard = initialBoard;
         _initialDepth = initialDepth;
-
-        findBestMove();
     }
 
 
     Move &getBestMove() {
+
+        findBestMove();
 
         return _bestMove;
     }

@@ -20,6 +20,8 @@
 
 #include <string>
 
+#include "Constants.hpp"
+
 
 /**
  * Row- and column indizes increase from a1 to h8.
@@ -69,38 +71,122 @@
  *       +---+---+---+---+---+---+---+---+
  * 0   1 |000|   |   |   |   |   |   |007|
  *       +---+---+---+---+---+---+---+---+
+ *
+ * Todo:
+ *  - lookup tables
+ *  - force_inline
  */
 
 
 /**
  * The following blocks of functions offer conversions between all used coordinate formats.
  */
-uint8_t sq0x88ByRowAndColumn(uint8_t row, uint8_t column);
-uint8_t sq0x88ByMask8x8(uint64_t mask8x8);
-uint8_t sq0x88BySq8x8(uint8_t sq8x8);
+FORCE_INLINE uint8_t sq0x88ByRowAndColumn(uint8_t row, uint8_t column) {
 
-uint8_t sq8x8ByRowAndColumn(uint8_t row, uint8_t column);
-uint8_t sq8x8ByMask8x8(uint64_t mask8x8);
-uint8_t sq8x8BySq0x88(uint8_t sq0x88);
+    return 16 * row + column;
+}
 
-uint64_t mask8x8ByRowAndColumn(uint8_t row, uint8_t column);
-uint64_t mask8x8BySq8x8(uint8_t sq8x8);
-uint64_t mask8x8BySq0x88(uint8_t sq0x88);
+FORCE_INLINE uint8_t sq0x88ByMask8x8(uint64_t mask8x8) {
 
-uint8_t rowByMask8x8(uint64_t mask8x8);
-uint8_t rowBySq8x8(uint8_t sq8x8);
-uint8_t rowBySq0x88(uint8_t sq0x88);
+    return __builtin_ffsll(mask8x8) - 1;
+}
 
-uint8_t columnByMask8x8(uint64_t mask8x8);
-uint8_t columnBySq8x8(uint8_t sq8x8);
-uint8_t columnBySq0x88(uint8_t sq0x88);
+FORCE_INLINE uint8_t sq0x88BySq8x8(uint8_t sq8x8) {
+
+    return sq8x8 + (sq8x8 & ~7);
+}
 
 
-bool sq0x88Valid(uint8_t sq0x88);
-uint8_t sq0x88Direction(uint8_t from, uint8_t to);
+FORCE_INLINE uint8_t sq8x8ByRowAndColumn(uint8_t row, uint8_t column) {
+
+    return 8 * row + column;
+}
+
+FORCE_INLINE uint8_t sq8x8ByMask8x8(uint64_t mask8x8) {
+
+    return __builtin_ffsll(mask8x8) - 1;
+}
+
+FORCE_INLINE uint8_t sq8x8BySq0x88(uint8_t sq0x88) {
+
+    return (sq0x88 + (sq0x88 & 7)) >> 1;
+}
 
 
-uint64_t addRowsAndColumnsToMask8x8(uint64_t mask8x8, int8_t rows, int8_t columns);
+FORCE_INLINE uint8_t rowByMask8x8(uint64_t mask8x8) {
+
+    return sq8x8ByMask8x8(mask8x8) / 8;
+}
+
+FORCE_INLINE uint8_t rowBySq8x8(uint8_t sq8x8) {
+
+    return sq8x8 / 8;
+}
+
+FORCE_INLINE uint8_t rowBySq0x88(uint8_t sq0x88) {
+
+    return sq0x88 / 16;
+}
 
 
-std::string algebraicByMask8x8(uint64_t mask8x8);
+FORCE_INLINE uint8_t columnByMask8x8(uint64_t mask8x8) {
+
+    return sq8x8ByMask8x8(mask8x8) % 8;
+}
+
+FORCE_INLINE uint8_t columnBySq8x8(uint8_t sq8x8) {
+
+    return sq8x8 % 8;
+}
+
+FORCE_INLINE uint8_t columnBySq0x88(uint8_t sq0x88) {
+
+    return sq0x88 % 16;
+}
+
+
+FORCE_INLINE uint64_t mask8x8ByRowAndColumn(uint8_t row, uint8_t column) {
+
+    return uint64_t(1) << (row * 8 + column);
+}
+
+FORCE_INLINE uint64_t mask8x8BySq8x8(uint8_t sq8x8) {
+
+    return uint64_t(1) << sq8x8;
+}
+
+FORCE_INLINE uint64_t mask8x8BySq0x88(uint8_t sq0x88) {
+
+    return mask8x8ByRowAndColumn(rowBySq0x88(sq0x88), columnBySq0x88(sq0x88));
+}
+
+
+FORCE_INLINE bool sq0x88Valid(uint8_t sq0x88) {
+
+    return !(sq0x88 & 0x88);
+}
+
+FORCE_INLINE bool sq0x88Valid64(uint64_t sq0x88) {
+
+    return !(sq0x88 & 0b1111111111111111111111111111111111111111111111111111111110001000);
+}
+
+FORCE_INLINE uint8_t sq0x88Diff(uint8_t from, uint8_t to) {
+
+    return 119 + from - to;
+}
+
+
+FORCE_INLINE uint64_t addRowsAndColumnsToMask8x8(uint64_t mask8x8, int8_t rows, int8_t columns) {
+
+    int row = rowByMask8x8(mask8x8) + rows;
+    int column = columnByMask8x8(mask8x8) + columns;
+
+    return (row >= 0 && row < 8 && column >= 0 && column < 8) ? mask8x8ByRowAndColumn(uint8_t(row), uint8_t(column)) : 0;
+}
+
+
+FORCE_INLINE std::string algebraicByMask8x8(uint64_t mask8x8) {
+
+    return mask8x8 ? (std::string(columnCharacterByIndex[columnByMask8x8(mask8x8)]) + std::string(rowCharacterByIndex[rowByMask8x8(mask8x8)])) : "invalid";
+}

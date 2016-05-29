@@ -18,9 +18,7 @@
 
 #include <cstring>
 
-#include "Board.hpp"
 #include "Constants.hpp"
-#include "Move.hpp"
 #include "MoveGenerator.hpp"
 #include "PositionMath.hpp"
 
@@ -238,67 +236,4 @@ void MoveGenerator::initialize() {
         _opponentRequiredMaskTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, -1);
         _opponentRequiredMaskTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, 1);
     }
-}
-
-
-/**
- * Generates all pseudo-legal moves.
- *
- * todo:
- *  - add casteling
- *  - add last-move-check for pawn en-passent captures
- *  - force unroll_loop? (only inner/outer?)
- *  - add piece-traversing version to speed up generation process in end-games
- */
-MoveGenerator::TMovesArray::size_type MoveGenerator::generateMoves(Board *board) {
-    
-    TMovesArray::size_type incrementor;
-
-    _totalMoveCount = 0;
-    _currentMove = 0;
-
-    for(uint8_t fromSq8x8 = 0; fromSq8x8 < 63; fromSq8x8++) {
-
-        PieceType fromPieceType = board->getPieceBySq8x8(fromSq8x8);
-
-        for(uint8_t toSq8x8 = 0; toSq8x8 < 63; toSq8x8++) {
-
-            PieceType toPieceType = board->getPieceBySq8x8(toSq8x8);
-            uint64_t toMask8x8 = mask8x8BySq8x8(toSq8x8);
-
-
-            // write current move
-            _moves[_totalMoveCount].movingPieceType = fromPieceType;
-            _moves[_totalMoveCount].capturedPieceType = toPieceType;
-            _moves[_totalMoveCount].fromSq0x88 = sq0x88BySq8x8(fromSq8x8);
-            _moves[_totalMoveCount].toSq0x88 = sq0x88BySq8x8(toSq8x8);
-
-
-            // test for validity
-            // current move is valid as default
-            // subsequent tests might change this to zero resulting in this move being overwritten
-            incrementor = 1;
-
-
-            // cannot be the same field (todo: needed??)
-            incrementor = incrementor >> (fromSq8x8 == toSq8x8);
-
-            // fromPieceType has to be of current player
-            incrementor = incrementor >> (board->playerToMove() != GET_PLAYER(fromPieceType));
-
-            // targetPiece is not of current player
-            incrementor = incrementor >> (board->playerToMove() == GET_PLAYER(toPieceType));
-
-            // as valid move in jump tables
-            incrementor = incrementor >> HAS_SET_BITS_64((~_jumpTable[fromSq8x8][fromPieceType]) & toMask8x8);
-            incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & board->getOccupiedMask());
-            incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~board->getOtherPlayerPiecesMask());
-
-
-            // go to next move if valid
-            _totalMoveCount += incrementor;
-        }
-    }
-
-    return _totalMoveCount;
 }

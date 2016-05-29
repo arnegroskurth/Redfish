@@ -61,65 +61,64 @@ public:
 
     Board() {}
 
-    Board(const Board &other) {
-
-        // todo: copy???
+    FORCE_INLINE Board(const Board &other) {
+        
         _bitboards = other._bitboards;
         _0x88 = other._0x88;
         _player = other._player;
         _bitfield = other._bitfield;
     }
 
-    uint64_t getWhiteMask() const { return _bitboards[7]; }
-    uint64_t getWhitePawnsMask() const { return _bitboards[7 + PieceType::PAWN]; }
-    uint64_t getWhiteKnightsMask() const { return _bitboards[7 + PieceType::KNIGHT]; }
-    uint64_t getWhiteBishopsMask() const { return _bitboards[7 + PieceType::BISHOP]; }
-    uint64_t getWhiteRooksMask() const { return _bitboards[7 + PieceType::ROOK]; }
-    uint64_t getWhiteQueenMask() const { return _bitboards[7 + PieceType::QUEEN]; }
-    uint64_t getWhiteKingMask() const { return _bitboards[7 + PieceType::KING]; }
+    FORCE_INLINE uint64_t getWhiteMask() const { return _bitboards[7]; }
+    FORCE_INLINE uint64_t getWhitePawnsMask() const { return _bitboards[7 + PieceType::PAWN]; }
+    FORCE_INLINE uint64_t getWhiteKnightsMask() const { return _bitboards[7 + PieceType::KNIGHT]; }
+    FORCE_INLINE uint64_t getWhiteBishopsMask() const { return _bitboards[7 + PieceType::BISHOP]; }
+    FORCE_INLINE uint64_t getWhiteRooksMask() const { return _bitboards[7 + PieceType::ROOK]; }
+    FORCE_INLINE uint64_t getWhiteQueenMask() const { return _bitboards[7 + PieceType::QUEEN]; }
+    FORCE_INLINE uint64_t getWhiteKingMask() const { return _bitboards[7 + PieceType::KING]; }
 
-    uint64_t getBlackMask() const { return _bitboards[0]; }
-    uint64_t getBlackPawnsMask() const { return _bitboards[0 + PieceType::PAWN]; }
-    uint64_t getBlackKnightsMask() const { return _bitboards[0 + PieceType::KNIGHT]; }
-    uint64_t getBlackBishopsMask() const { return _bitboards[0 + PieceType::BISHOP]; }
-    uint64_t getBlackRooksMask() const { return _bitboards[0 + PieceType::ROOK]; }
-    uint64_t getBlackQueenMask() const { return _bitboards[0 + PieceType::QUEEN]; }
-    uint64_t getBlackKingMask() const { return _bitboards[0 + PieceType::KING]; }
+    FORCE_INLINE uint64_t getBlackMask() const { return _bitboards[0]; }
+    FORCE_INLINE uint64_t getBlackPawnsMask() const { return _bitboards[0 + PieceType::PAWN]; }
+    FORCE_INLINE uint64_t getBlackKnightsMask() const { return _bitboards[0 + PieceType::KNIGHT]; }
+    FORCE_INLINE uint64_t getBlackBishopsMask() const { return _bitboards[0 + PieceType::BISHOP]; }
+    FORCE_INLINE uint64_t getBlackRooksMask() const { return _bitboards[0 + PieceType::ROOK]; }
+    FORCE_INLINE uint64_t getBlackQueenMask() const { return _bitboards[0 + PieceType::QUEEN]; }
+    FORCE_INLINE uint64_t getBlackKingMask() const { return _bitboards[0 + PieceType::KING]; }
 
-    uint64_t getCurrentPlayerPiecesMask() const { return _bitboards[whiteToMove() * 7]; }
-    uint64_t getCurrentPlayerPawnsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::PAWN]; }
-    uint64_t getCurrentPlayerKnightsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KNIGHT]; }
-    uint64_t getCurrentPlayerBishopsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::BISHOP]; }
-    uint64_t getCurrentPlayerRooksMask() const { return _bitboards[whiteToMove() * 7 + PieceType::ROOK]; }
-    uint64_t getCurrentPlayerQueenMask() const { return _bitboards[whiteToMove() * 7 + PieceType::QUEEN]; }
-    uint64_t getCurrentPlayerKingMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KING]; }
+    FORCE_INLINE uint64_t getCurrentPlayerPiecesMask() const { return _bitboards[whiteToMove() * 7]; }
+    FORCE_INLINE uint64_t getCurrentPlayerPawnsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::PAWN]; }
+    FORCE_INLINE uint64_t getCurrentPlayerKnightsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KNIGHT]; }
+    FORCE_INLINE uint64_t getCurrentPlayerBishopsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::BISHOP]; }
+    FORCE_INLINE uint64_t getCurrentPlayerRooksMask() const { return _bitboards[whiteToMove() * 7 + PieceType::ROOK]; }
+    FORCE_INLINE uint64_t getCurrentPlayerQueenMask() const { return _bitboards[whiteToMove() * 7 + PieceType::QUEEN]; }
+    FORCE_INLINE uint64_t getCurrentPlayerKingMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KING]; }
 
-    uint64_t getOtherPlayerPiecesMask() const { return _bitboards[blackToMove() * 7]; }
-    uint64_t getOtherPlayerPawnsMask() const { return _bitboards[blackToMove() * 7 + PieceType::PAWN]; }
-    uint64_t getOtherPlayerKnightsMask() const { return _bitboards[blackToMove() * 7 + PieceType::KNIGHT]; }
-    uint64_t getOtherPlayerBishopsMask() const { return _bitboards[blackToMove() * 7 + PieceType::BISHOP]; }
-    uint64_t getOtherPlayerRooksMask() const { return _bitboards[blackToMove() * 7 + PieceType::ROOK]; }
-    uint64_t getOtherPlayerQueenMask() const { return _bitboards[blackToMove() * 7 + PieceType::QUEEN]; }
-    uint64_t getOtherPlayerKingMask() const { return _bitboards[blackToMove() * 7 + PieceType::KING]; }
+    FORCE_INLINE uint64_t getOtherPlayerPiecesMask() const { return _bitboards[blackToMove() * 7]; }
+    FORCE_INLINE uint64_t getOtherPlayerPawnsMask() const { return _bitboards[blackToMove() * 7 + PieceType::PAWN]; }
+    FORCE_INLINE uint64_t getOtherPlayerKnightsMask() const { return _bitboards[blackToMove() * 7 + PieceType::KNIGHT]; }
+    FORCE_INLINE uint64_t getOtherPlayerBishopsMask() const { return _bitboards[blackToMove() * 7 + PieceType::BISHOP]; }
+    FORCE_INLINE uint64_t getOtherPlayerRooksMask() const { return _bitboards[blackToMove() * 7 + PieceType::ROOK]; }
+    FORCE_INLINE uint64_t getOtherPlayerQueenMask() const { return _bitboards[blackToMove() * 7 + PieceType::QUEEN]; }
+    FORCE_INLINE uint64_t getOtherPlayerKingMask() const { return _bitboards[blackToMove() * 7 + PieceType::KING]; }
 
-    uint64_t getOccupiedMask() const { return _bitboards[14]; }
-    uint64_t getNotOccupiedMask() const { return _bitboards[15]; }
+    FORCE_INLINE uint64_t getOccupiedMask() const { return _bitboards[14]; }
+    FORCE_INLINE uint64_t getNotOccupiedMask() const { return _bitboards[15]; }
 
-    PieceType getPieceBySq0x88(uint8_t sq0x88) const { return _0x88[sq0x88]; }
-    PieceType getPieceBySq8x8(uint8_t sq8x8) const { return _0x88[sq0x88BySq8x8(sq8x8)]; }
-    PieceType getPieceByMask8x8(uint64_t mask8x8) const { return _0x88[sq0x88ByMask8x8(mask8x8)]; }
+    FORCE_INLINE PieceType getPieceBySq0x88(uint8_t sq0x88) const { return _0x88[sq0x88]; }
+    FORCE_INLINE PieceType getPieceBySq8x8(uint8_t sq8x8) const { return _0x88[sq0x88BySq8x8(sq8x8)]; }
+    FORCE_INLINE PieceType getPieceByMask8x8(uint64_t mask8x8) const { return _0x88[sq0x88ByMask8x8(mask8x8)]; }
 
-    Player playerToMove() const { return _player; }
-    Player playerNotToMove() const { return GET_OTHER_PLAYER(_player); }
-    bool whiteToMove() const { return IS_WHITE(_player); }
-    bool blackToMove() const { return IS_BLACK(_player); }
+    FORCE_INLINE Player playerToMove() const { return _player; }
+    FORCE_INLINE Player playerNotToMove() const { return GET_OTHER_PLAYER(_player); }
+    FORCE_INLINE bool whiteToMove() const { return IS_WHITE(_player); }
+    FORCE_INLINE bool blackToMove() const { return IS_BLACK(_player); }
 
 
     /**
      * Applies given move to the current board state.
      */
     template<bool verifyAfterwards = false>
-    void applyMove(Move move) {
+    FORCE_INLINE void applyMove(Move move) {
 
         uint64_t fromMask8x8 = mask8x8BySq0x88(move.fromSq0x88);
         uint64_t toMask8x8 = mask8x8BySq0x88(move.toSq0x88);
@@ -203,7 +202,7 @@ public:
     /**
      * Can be used to check for consistency between 0x88 and bitboard representations.
      */
-    void verify() const {
+    FORCE_INLINE void verify() const {
 
         #define __CHECK(Y, X) if(!(X)) { std::cerr << algebraicByMask8x8(Y) << ": !(" << #X << ")" << std::endl; std::exit(1); }
 
@@ -223,7 +222,27 @@ public:
             __CHECK(mask8x8, IS_EMPTY(piece) == HAS_SET_BITS_64(mask8x8 & _bitboards[15]));
         }
     }
+
+
+    friend std::ostream& operator<< (std::ostream &out, const Board &board) {
+
+        out << "     a   b   c   d   e   f   g   h" << std::endl;
+        out << "   +---+---+---+---+---+---+---+---+" << std::endl;
+
+        for(uint8_t row = 0; row < 8; row++) {
+
+            out << " " << (8 - row) << " +";
+
+            for(uint8_t column = 0; column < 8; column++) {
+
+                auto it = fenCharacters.find(board.getPieceBySq8x8(63 - (row * 8 + column)));
+
+                out << " " << ((it == fenCharacters.end()) ? ' ' : it->second) << " +";
+            }
+
+            out << std::endl << "   +---+---+---+---+---+---+---+---+" << std::endl;
+        }
+
+        return out;
+    }
 };
-
-
-extern std::ostream& operator<< (std::ostream &out, const Board &board);

@@ -18,8 +18,26 @@
 
 #pragma once
 
+#include "PositionMath.hpp"
+
 
 /**
  * Represents a given position 64bit 8x8 mask as crosses on a board.
  */
-void drawMask8x8(uint64_t mask8x8);
+FORCE_INLINE void drawMask8x8(uint64_t mask8x8) {
+
+    std::cout << "     a   b   c   d   e   f   g   h" << std::endl;
+    std::cout << "   +---+---+---+---+---+---+---+---+" << std::endl;
+
+    for(int row = 7; row >= 0; row--) {
+
+        std::cout << " " << (row + 1) << " +";
+
+        for(int column = 0; column < 8; column++) {
+
+            std::cout << " " << ((mask8x8ByRowAndColumn(row, column) & mask8x8) ? 'x' : ' ') << " +";
+        }
+
+        std::cout << std::endl << "   +---+---+---+---+---+---+---+---+" << std::endl;
+    }
+}
