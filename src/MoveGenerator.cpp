@@ -18,6 +18,7 @@
 
 #include <cstring>
 
+#include "Board.hpp"
 #include "Constants.hpp"
 #include "Move.hpp"
 #include "MoveGenerator.hpp"
@@ -249,7 +250,7 @@ void MoveGenerator::initialize() {
  *  - force unroll_loop? (only inner/outer?)
  *  - add piece-traversing version to speed up generation process in end-games
  */
-void MoveGenerator::generateMoves() {
+MoveGenerator::TMovesArray::size_type MoveGenerator::generateMoves(Board *board) {
     
     TMovesArray::size_type incrementor;
 
@@ -258,11 +259,11 @@ void MoveGenerator::generateMoves() {
 
     for(uint8_t fromSq8x8 = 0; fromSq8x8 < 63; fromSq8x8++) {
 
-        PieceType fromPieceType = _board->getPieceBySq8x8(fromSq8x8);
+        PieceType fromPieceType = board->getPieceBySq8x8(fromSq8x8);
 
         for(uint8_t toSq8x8 = 0; toSq8x8 < 63; toSq8x8++) {
 
-            PieceType toPieceType = _board->getPieceBySq8x8(toSq8x8);
+            PieceType toPieceType = board->getPieceBySq8x8(toSq8x8);
             uint64_t toMask8x8 = mask8x8BySq8x8(toSq8x8);
 
 
@@ -283,19 +284,21 @@ void MoveGenerator::generateMoves() {
             incrementor = incrementor >> (fromSq8x8 == toSq8x8);
 
             // fromPieceType has to be of current player
-            incrementor = incrementor >> (_board->playerToMove() != GET_PLAYER(fromPieceType));
+            incrementor = incrementor >> (board->playerToMove() != GET_PLAYER(fromPieceType));
 
             // targetPiece is not of current player
-            incrementor = incrementor >> (_board->playerToMove() == GET_PLAYER(toPieceType));
+            incrementor = incrementor >> (board->playerToMove() == GET_PLAYER(toPieceType));
 
             // as valid move in jump tables
             incrementor = incrementor >> HAS_SET_BITS_64((~_jumpTable[fromSq8x8][fromPieceType]) & toMask8x8);
-            incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & _board->getOccupiedMask());
-            incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~_board->getOtherPlayerPiecesMask());
+            incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & board->getOccupiedMask());
+            incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~board->getOtherPlayerPiecesMask());
 
 
             // go to next move if valid
             _totalMoveCount += incrementor;
         }
     }
+
+    return _totalMoveCount;
 }

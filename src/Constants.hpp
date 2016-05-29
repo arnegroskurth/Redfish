@@ -72,6 +72,7 @@ enum Player : uint8_t {
 const uint8_t playerMask = 0b00011000;
 
 
+#define PIECE_TYPE(X) (static_cast<PieceType>(pieceTypeMask & X))
 #define IS_PAWN(X) (PieceType::PAWN == (pieceTypeMask & X))
 #define IS_KNIGHT(X) (PieceType::KNIGHT == (pieceTypeMask & X))
 #define IS_BISHOP(X) (PieceType::BISHOP == (pieceTypeMask & X))
@@ -79,7 +80,7 @@ const uint8_t playerMask = 0b00011000;
 #define IS_QUEEN(X) (PieceType::QUEEN == (pieceTypeMask & X))
 #define IS_KING(X) (PieceType::KING == (pieceTypeMask & X))
 
-#define GET_PLAYER(X) (playerMask & X)
+#define GET_PLAYER(X) (static_cast<Player>(playerMask & X))
 #define GET_OTHER_PLAYER(X) (static_cast<Player>(((Player::WHITE & X) << 1) | ((Player::BLACK & X) >> 1)))
 #define IS_WHITE(X) ((Player::WHITE & X) == Player::WHITE)
 #define IS_BLACK(X) ((Player::BLACK & X) == Player::BLACK)
@@ -117,6 +118,15 @@ enum DirectionDelta0x88 : uint8_t {
 #define HAS_SET_BITS_64(X) (__builtin_ffsll(X) > 0)
 #define HAS_SET_BITS_32(X) (__builtin_ffsl(X) > 0)
 #define HAS_SET_BITS_8(X) (__builtin_ffs(X) > 0)
+#define SET_BITS_64(X) (__builtin_popcountll(X))
+#define SET_BITS_32(X) (__builtin_popcountl(X))
+#define SET_BITS_8(X) (__builtin_popcount(X))
 
 
+#define FORCE_INLINE __attribute__((__always_inline__))
+
+
+const std::string mastHead =
+    "Redfish Copyright (C) 2016 Arne Groskurth.\n"
+    "(Licensed under the GNU General Public License v3.0.)\n\n";
 

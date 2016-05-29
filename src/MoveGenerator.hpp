@@ -59,9 +59,10 @@ public:
     static void initialize();
 
 
+    MoveGenerator() {}
     MoveGenerator(Board *board) {
 
-        _board = board;
+        generateMoves(board);
     }
 
 
@@ -70,7 +71,7 @@ public:
      *
      * @return Number of moves generated
      */
-    void generateMoves();
+    TMovesArray::size_type generateMoves(Board *board);
 
 
     /**

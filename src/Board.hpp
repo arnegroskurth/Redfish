@@ -19,6 +19,8 @@
 #pragma once
 
 #include <array>
+#include <cstdlib>
+#include <iostream>
 #include <string>
 
 #include "Constants.hpp"
@@ -68,40 +70,40 @@ public:
         _bitfield = other._bitfield;
     }
 
-    uint64_t getWhiteMask() const { return this->_bitboards[7]; }
-    uint64_t getWhitePawnsMask() const { return this->_bitboards[7 + PieceType::PAWN]; }
-    uint64_t getWhiteKnightsMask() const { return this->_bitboards[7 + PieceType::KNIGHT]; }
-    uint64_t getWhiteBishopsMask() const { return this->_bitboards[7 + PieceType::BISHOP]; }
-    uint64_t getWhiteRooksMask() const { return this->_bitboards[7 + PieceType::ROOK]; }
-    uint64_t getWhiteQueenMask() const { return this->_bitboards[7 + PieceType::QUEEN]; }
-    uint64_t getWhiteKingMask() const { return this->_bitboards[7 + PieceType::KING]; }
+    uint64_t getWhiteMask() const { return _bitboards[7]; }
+    uint64_t getWhitePawnsMask() const { return _bitboards[7 + PieceType::PAWN]; }
+    uint64_t getWhiteKnightsMask() const { return _bitboards[7 + PieceType::KNIGHT]; }
+    uint64_t getWhiteBishopsMask() const { return _bitboards[7 + PieceType::BISHOP]; }
+    uint64_t getWhiteRooksMask() const { return _bitboards[7 + PieceType::ROOK]; }
+    uint64_t getWhiteQueenMask() const { return _bitboards[7 + PieceType::QUEEN]; }
+    uint64_t getWhiteKingMask() const { return _bitboards[7 + PieceType::KING]; }
 
-    uint64_t getBlackMask() const { return this->_bitboards[0]; }
-    uint64_t getBlackPawnsMask() const { return this->_bitboards[0 + PieceType::PAWN]; }
-    uint64_t getBlackKnightsMask() const { return this->_bitboards[0 + PieceType::KNIGHT]; }
-    uint64_t getBlackBishopsMask() const { return this->_bitboards[0 + PieceType::BISHOP]; }
-    uint64_t getBlackRooksMask() const { return this->_bitboards[0 + PieceType::ROOK]; }
-    uint64_t getBlackQueenMask() const { return this->_bitboards[0 + PieceType::QUEEN]; }
-    uint64_t getBlackKingMask() const { return this->_bitboards[0 + PieceType::KING]; }
+    uint64_t getBlackMask() const { return _bitboards[0]; }
+    uint64_t getBlackPawnsMask() const { return _bitboards[0 + PieceType::PAWN]; }
+    uint64_t getBlackKnightsMask() const { return _bitboards[0 + PieceType::KNIGHT]; }
+    uint64_t getBlackBishopsMask() const { return _bitboards[0 + PieceType::BISHOP]; }
+    uint64_t getBlackRooksMask() const { return _bitboards[0 + PieceType::ROOK]; }
+    uint64_t getBlackQueenMask() const { return _bitboards[0 + PieceType::QUEEN]; }
+    uint64_t getBlackKingMask() const { return _bitboards[0 + PieceType::KING]; }
 
-    uint64_t getCurrentPlayerPiecesMask() const { return this->_bitboards[this->whiteToMove() * 7]; }
-    uint64_t getCurrentPlayerPawnsMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::PAWN]; }
-    uint64_t getCurrentPlayerKnightsMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::KNIGHT]; }
-    uint64_t getCurrentPlayerBishopsMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::BISHOP]; }
-    uint64_t getCurrentPlayerRooksMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::ROOK]; }
-    uint64_t getCurrentPlayerQueenMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::QUEEN]; }
-    uint64_t getCurrentPlayerKingMask() const { return this->_bitboards[this->whiteToMove() * 7 + PieceType::KING]; }
+    uint64_t getCurrentPlayerPiecesMask() const { return _bitboards[whiteToMove() * 7]; }
+    uint64_t getCurrentPlayerPawnsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::PAWN]; }
+    uint64_t getCurrentPlayerKnightsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KNIGHT]; }
+    uint64_t getCurrentPlayerBishopsMask() const { return _bitboards[whiteToMove() * 7 + PieceType::BISHOP]; }
+    uint64_t getCurrentPlayerRooksMask() const { return _bitboards[whiteToMove() * 7 + PieceType::ROOK]; }
+    uint64_t getCurrentPlayerQueenMask() const { return _bitboards[whiteToMove() * 7 + PieceType::QUEEN]; }
+    uint64_t getCurrentPlayerKingMask() const { return _bitboards[whiteToMove() * 7 + PieceType::KING]; }
 
-    uint64_t getOtherPlayerPiecesMask() const { return this->_bitboards[this->blackToMove() * 7]; }
-    uint64_t getOtherPlayerPawnsMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::PAWN]; }
-    uint64_t getOtherPlayerKnightsMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::KNIGHT]; }
-    uint64_t getOtherPlayerBishopsMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::BISHOP]; }
-    uint64_t getOtherPlayerRooksMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::ROOK]; }
-    uint64_t getOtherPlayerQueenMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::QUEEN]; }
-    uint64_t getOtherPlayerKingMask() const { return this->_bitboards[this->blackToMove() * 7 + PieceType::KING]; }
+    uint64_t getOtherPlayerPiecesMask() const { return _bitboards[blackToMove() * 7]; }
+    uint64_t getOtherPlayerPawnsMask() const { return _bitboards[blackToMove() * 7 + PieceType::PAWN]; }
+    uint64_t getOtherPlayerKnightsMask() const { return _bitboards[blackToMove() * 7 + PieceType::KNIGHT]; }
+    uint64_t getOtherPlayerBishopsMask() const { return _bitboards[blackToMove() * 7 + PieceType::BISHOP]; }
+    uint64_t getOtherPlayerRooksMask() const { return _bitboards[blackToMove() * 7 + PieceType::ROOK]; }
+    uint64_t getOtherPlayerQueenMask() const { return _bitboards[blackToMove() * 7 + PieceType::QUEEN]; }
+    uint64_t getOtherPlayerKingMask() const { return _bitboards[blackToMove() * 7 + PieceType::KING]; }
 
-    uint64_t getOccupiedMask() const { return this->_bitboards[14]; }
-    uint64_t getNotOccupiedMask() const { return this->_bitboards[15]; }
+    uint64_t getOccupiedMask() const { return _bitboards[14]; }
+    uint64_t getNotOccupiedMask() const { return _bitboards[15]; }
 
     PieceType getPieceBySq0x88(uint8_t sq0x88) const { return _0x88[sq0x88]; }
     PieceType getPieceBySq8x8(uint8_t sq8x8) const { return _0x88[sq0x88BySq8x8(sq8x8)]; }
@@ -109,14 +111,43 @@ public:
 
     Player playerToMove() const { return _player; }
     Player playerNotToMove() const { return GET_OTHER_PLAYER(_player); }
-    bool whiteToMove() const { return _player & Player::WHITE; }
-    bool blackToMove() const { return _player & Player::BLACK; }
+    bool whiteToMove() const { return IS_WHITE(_player); }
+    bool blackToMove() const { return IS_BLACK(_player); }
 
 
-    void applyMove(Move *move) {
+    /**
+     * Applies given move to the current board state.
+     */
+    template<bool verifyAfterwards = false>
+    void applyMove(Move move) {
 
-        // todo: actual application
-        // todo: switch player
+        uint64_t fromMask8x8 = mask8x8BySq0x88(move.fromSq0x88);
+        uint64_t toMask8x8 = mask8x8BySq0x88(move.toSq0x88);
+        PieceType movingPieceType = PIECE_TYPE(move.movingPieceType);
+        PieceType capturedPieceType = PIECE_TYPE(move.capturedPieceType);
+        Player movingPlayer = GET_PLAYER(move.movingPieceType);
+        Player otherPlayer = GET_OTHER_PLAYER(movingPlayer);
+
+        _0x88[move.toSq0x88] = move.movingPieceType;
+        _0x88[move.fromSq0x88] = PieceType::NONE;
+
+        _bitboards[IS_WHITE(movingPlayer) * 7] ^= fromMask8x8;
+        _bitboards[IS_WHITE(movingPlayer) * 7] |= toMask8x8;
+        _bitboards[IS_WHITE(movingPlayer) * 7 + movingPieceType] ^= fromMask8x8;
+        _bitboards[IS_WHITE(movingPlayer) * 7 + movingPieceType] |= toMask8x8;
+
+        _bitboards[IS_WHITE(otherPlayer) * 7] &= ~toMask8x8;
+        _bitboards[IS_WHITE(otherPlayer) * 7 + capturedPieceType] &= ~toMask8x8;
+
+        _bitboards[14] ^= fromMask8x8;
+        _bitboards[14] |= toMask8x8;
+        _bitboards[15] ^= fromMask8x8;
+        _bitboards[15] &= ~toMask8x8;
+
+        _player = GET_OTHER_PLAYER(_player);
+
+
+        if(verifyAfterwards) verify();
     }
 
 
@@ -125,26 +156,26 @@ public:
      */
     void reset() {
 
-        this->_bitboards[7]                                             = 0b0000000000000000000000000000000000000000000000001111111111111111;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_PAWN)]      = 0b0000000000000000000000000000000000000000000000001111111100000000;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_ROOK)]      = 0b0000000000000000000000000000000000000000000000000000000010000001;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_KNIGHT)]    = 0b0000000000000000000000000000000000000000000000000000000001000010;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_BISHOP)]    = 0b0000000000000000000000000000000000000000000000000000000000100100;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_QUEEN)]     = 0b0000000000000000000000000000000000000000000000000000000000010000;
-        this->_bitboards[7 + (0b00000111 & PieceType::WHITE_KING)]      = 0b0000000000000000000000000000000000000000000000000000000000001000;
+        _bitboards[7]                       = 0b0000000000000000000000000000000000000000000000001111111111111111;
+        _bitboards[7 + PieceType::PAWN]     = 0b0000000000000000000000000000000000000000000000001111111100000000;
+        _bitboards[7 + PieceType::ROOK]     = 0b0000000000000000000000000000000000000000000000000000000010000001;
+        _bitboards[7 + PieceType::KNIGHT]   = 0b0000000000000000000000000000000000000000000000000000000001000010;
+        _bitboards[7 + PieceType::BISHOP]   = 0b0000000000000000000000000000000000000000000000000000000000100100;
+        _bitboards[7 + PieceType::QUEEN]    = 0b0000000000000000000000000000000000000000000000000000000000001000;
+        _bitboards[7 + PieceType::KING]     = 0b0000000000000000000000000000000000000000000000000000000000010000;
 
-        this->_bitboards[0]                                             = 0b1111111111111111000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_PAWN)]      = 0b0000000011111111000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_ROOK)]      = 0b1000000100000000000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_KNIGHT)]    = 0b0100001000000000000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_BISHOP)]    = 0b0010010000000000000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_QUEEN)]     = 0b0001000000000000000000000000000000000000000000000000000000000000;
-        this->_bitboards[0 + (0b00000111 & PieceType::BLACK_KING)]      = 0b0000100000000000000000000000000000000000000000000000000000000000;
+        _bitboards[0]                       = 0b1111111111111111000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::PAWN]     = 0b0000000011111111000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::ROOK]     = 0b1000000100000000000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::KNIGHT]   = 0b0100001000000000000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::BISHOP]   = 0b0010010000000000000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::QUEEN]    = 0b0000100000000000000000000000000000000000000000000000000000000000;
+        _bitboards[0 + PieceType::KING]     = 0b0001000000000000000000000000000000000000000000000000000000000000;
 
-        this->_bitboards[14]                                            = 0b1111111111111111000000000000000000000000000000001111111111111111;
-        this->_bitboards[15]                                            = 0b0000000000000000111111111111111111111111111111110000000000000000;
+        _bitboards[14]                      = 0b1111111111111111000000000000000000000000000000001111111111111111;
+        _bitboards[15]                      = 0b0000000000000000111111111111111111111111111111110000000000000000;
 
-        this->_0x88 = {
+        _0x88 = {
             PieceType::WHITE_ROOK, PieceType::WHITE_KNIGHT, PieceType::WHITE_BISHOP, PieceType::WHITE_QUEEN, PieceType::WHITE_KING, PieceType::WHITE_BISHOP, PieceType::WHITE_KNIGHT, PieceType::WHITE_ROOK,
             PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID,
             PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN, PieceType::WHITE_PAWN,
@@ -163,9 +194,34 @@ public:
             PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID, PieceType::INVALID
         };
 
-        this->_player = Player::WHITE;
+        _player = Player::WHITE;
 
         // todo: init bitfield
+    }
+
+
+    /**
+     * Can be used to check for consistency between 0x88 and bitboard representations.
+     */
+    void verify() const {
+
+        #define __CHECK(Y, X) if(!(X)) { std::cerr << algebraicByMask8x8(Y) << ": !(" << #X << ")" << std::endl; std::exit(1); }
+
+        for(uint8_t sq0x88 = 0; sq0x88 < 120; ++sq0x88) {
+
+            if(!sq0x88Valid(sq0x88)) continue;
+
+            uint64_t mask8x8 = mask8x8BySq0x88(sq0x88);
+
+            PieceType piece = _0x88[sq0x88];
+            PieceType pieceType = PIECE_TYPE(piece);
+            Player player = GET_PLAYER(piece);
+
+            __CHECK(mask8x8, IS_EMPTY(piece) != HAS_SET_BITS_64(mask8x8 & _bitboards[IS_WHITE(player) * 7]));
+            __CHECK(mask8x8, IS_EMPTY(piece) != HAS_SET_BITS_64(mask8x8 & _bitboards[IS_WHITE(player) * 7 + pieceType]));
+            __CHECK(mask8x8, IS_EMPTY(piece) != HAS_SET_BITS_64(mask8x8 & _bitboards[14]));
+            __CHECK(mask8x8, IS_EMPTY(piece) == HAS_SET_BITS_64(mask8x8 & _bitboards[15]));
+        }
     }
 };
 

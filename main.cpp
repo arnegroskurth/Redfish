@@ -26,10 +26,7 @@
 
 int main() {
 
-    std::cout <<
-        "Redfish Copyright (C) 2016 Arne Groskurth.\n"
-        "(Licensed under the GNU General Public License v3.0.)\n\n";
-
+    std::cout << mastHead;
 
     MoveGenerator::initialize();
 
@@ -41,7 +38,6 @@ int main() {
 
 
     MoveGenerator moveGenerator(&board);
-    moveGenerator.generateMoves();
 
 
     std::cout << "Total move count: " << moveGenerator.getTotalMoveCount() << std::endl;

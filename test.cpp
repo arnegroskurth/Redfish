@@ -1,26 +1,23 @@
 
+#include <cstdlib>
 #include <iostream>
 #include <bitset>
 
+#include "src/Board.hpp"
 #include "src/Constants.hpp"
+#include "src/Engine.hpp"
+#include "src/Evaluation.hpp"
+#include "src/Misc.hpp"
+#include "src/Move.hpp"
+#include "src/MoveGenerator.hpp"
+#include "src/PositionMath.hpp"
+
 
 int main() {
 
-    std::cout << HAS_SET_BITS_64(uint64_t(0)) << std::endl;
-    std::cout << HAS_SET_BITS_64(uint64_t(1)) << std::endl;
-    std::cout << HAS_SET_BITS_64(uint64_t(16)) << std::endl;
-    std::cout << HAS_SET_BITS_64(uint64_t(4096)) << std::endl;
+    MoveGenerator::initialize();
 
-    std::cout << HAS_SET_BITS_32(uint32_t(0)) << std::endl;
-    std::cout << HAS_SET_BITS_32(uint32_t(1)) << std::endl;
-    std::cout << HAS_SET_BITS_32(uint32_t(16)) << std::endl;
-    std::cout << HAS_SET_BITS_32(uint32_t(4096)) << std::endl;
-
-    std::cout << HAS_SET_BITS_8(uint8_t(0)) << std::endl;
-    std::cout << HAS_SET_BITS_8(uint8_t(1)) << std::endl;
-    std::cout << HAS_SET_BITS_8(uint8_t(16)) << std::endl;
-    std::cout << HAS_SET_BITS_8(uint8_t(250)) << std::endl;
-
+    drawMask8x8(MoveGenerator::getEmptyMaskTableEntry(uint8_t(7), uint8_t(63)));
 
     return 0;
 }

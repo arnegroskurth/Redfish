@@ -16,32 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
+#include <cstdlib>
 #include <iostream>
 
-#include "Constants.hpp"
-#include "Misc.hpp"
+#include "src/Board.hpp"
+#include "src/Engine.hpp"
+#include "src/MoveGenerator.hpp"
 
 
-struct Move {
+int main() {
 
-    PieceType movingPieceType;
-    PieceType capturedPieceType;
-
-    uint8_t fromSq0x88;
-    uint8_t toSq0x88;
+    MoveGenerator::initialize();
 
 
-    Move() {}
-    Move(const Move &other) {
+    Board board;
+    board.reset();
 
-        movingPieceType = other.movingPieceType;
-        capturedPieceType = other.capturedPieceType;
-        fromSq0x88 = other.fromSq0x88;
-        toSq0x88 = other.toSq0x88;
+    while(true) {
+
+        std::system("clear");
+
+        std::cout << mastHead;
+        std::cout << board;
+
+        Engine engine(&board, 6);
+
+        board.applyMove(engine.getBestMove());
     }
-};
-
-
-extern std::ostream& operator<< (std::ostream& out, const Move &move);
+}

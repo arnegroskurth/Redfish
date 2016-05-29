@@ -14,34 +14,53 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Todo:
+ *  - Implement/compare NegaScout/MTD-f search algorithms
+ *  - Use transposition table
  */
 
 #pragma once
 
-#include <iostream>
-
-#include "Constants.hpp"
-#include "Misc.hpp"
-
-
-struct Move {
-
-    PieceType movingPieceType;
-    PieceType capturedPieceType;
-
-    uint8_t fromSq0x88;
-    uint8_t toSq0x88;
+#include "Evaluation.hpp"
+#include "Move.hpp"
+#include "MoveGenerator.hpp"
 
 
-    Move() {}
-    Move(const Move &other) {
+class Engine {
 
-        movingPieceType = other.movingPieceType;
-        capturedPieceType = other.capturedPieceType;
-        fromSq0x88 = other.fromSq0x88;
-        toSq0x88 = other.toSq0x88;
+protected:
+
+    Evaluation evaluation;
+
+    Board *_initialBoard;
+    uint8_t _initialDepth;
+
+    Move _bestMove;
+
+
+    void findBestMove();
+
+    /**
+     * Alpha-Beta-Pruning
+     */
+    int64_t max(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta);
+    int64_t min(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta);
+
+
+public:
+
+    Engine(Board *initialBoard, uint8_t initialDepth) {
+
+        _initialBoard = initialBoard;
+        _initialDepth = initialDepth;
+
+        findBestMove();
+    }
+
+
+    Move &getBestMove() {
+
+        return _bestMove;
     }
 };
-
-
-extern std::ostream& operator<< (std::ostream& out, const Move &move);

@@ -16,32 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <iostream>
-
-#include "Constants.hpp"
-#include "Misc.hpp"
+#include "Evaluation.hpp"
 
 
-struct Move {
+int64_t Evaluation::evaluate(Board *board) {
 
-    PieceType movingPieceType;
-    PieceType capturedPieceType;
+    int64_t ret = 0;
 
-    uint8_t fromSq0x88;
-    uint8_t toSq0x88;
+    ret += 1000 * SET_BITS_64(board->getWhiteKingMask() & board->getBlackKingMask());
+    ret += 9 * SET_BITS_64(board->getWhiteQueenMask() & board->getBlackQueenMask());
+    ret += 5 * SET_BITS_64(board->getWhiteRooksMask() & board->getBlackRooksMask());
+    ret += 4 * SET_BITS_64(board->getWhiteKnightsMask() & board->getBlackKnightsMask());
+    ret += 3 * SET_BITS_64(board->getWhiteBishopsMask() & board->getBlackBishopsMask());
+    ret += 1 * SET_BITS_64(board->getWhitePawnsMask() & board->getBlackPawnsMask());
 
-
-    Move() {}
-    Move(const Move &other) {
-
-        movingPieceType = other.movingPieceType;
-        capturedPieceType = other.capturedPieceType;
-        fromSq0x88 = other.fromSq0x88;
-        toSq0x88 = other.toSq0x88;
-    }
-};
-
-
-extern std::ostream& operator<< (std::ostream& out, const Move &move);
+    return ret;
+}

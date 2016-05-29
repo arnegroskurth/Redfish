@@ -18,30 +18,18 @@
 
 #pragma once
 
-#include <iostream>
+#include <cstdlib>
 
-#include "Constants.hpp"
-#include "Misc.hpp"
-
-
-struct Move {
-
-    PieceType movingPieceType;
-    PieceType capturedPieceType;
-
-    uint8_t fromSq0x88;
-    uint8_t toSq0x88;
+#include "Board.hpp"
 
 
-    Move() {}
-    Move(const Move &other) {
+class Evaluation {
 
-        movingPieceType = other.movingPieceType;
-        capturedPieceType = other.capturedPieceType;
-        fromSq0x88 = other.fromSq0x88;
-        toSq0x88 = other.toSq0x88;
-    }
+public:
+
+    /**
+     * Evaluates a given board state.
+     * Positive values indicate a benefit for white, negative for black.
+     */
+    int64_t evaluate(Board *board);
 };
-
-
-extern std::ostream& operator<< (std::ostream& out, const Move &move);
