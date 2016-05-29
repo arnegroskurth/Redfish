@@ -41,15 +41,15 @@ void MoveGenerator::initialize() {
         _jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 1, -1);
         _jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 1, 0);
         _jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 1, 1);
-        _jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, -1);
-        _jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, 1);
+        //_jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, -1);
+        //_jumpTable[fromSq8x8][PieceType::WHITE_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, 1);
 
         if(row == 6) _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, -2, 0);
         _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, -1, -1);
         _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, -1, 0);
         _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, -1, 1);
-        _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, -1);
-        _jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, 1);
+        //_jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, -1);
+        //_jumpTable[fromSq8x8][PieceType::BLACK_PAWN] |= addRowsAndColumnsToMask8x8(fromMask8x8, 0, 1);
 
         _jumpTable[fromSq8x8][PieceType::WHITE_KNIGHT] |= addRowsAndColumnsToMask8x8(fromMask8x8, -2, -1);
         _jumpTable[fromSq8x8][PieceType::WHITE_KNIGHT] |= addRowsAndColumnsToMask8x8(fromMask8x8, -2, 1);
