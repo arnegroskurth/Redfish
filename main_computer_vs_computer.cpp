@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
 #include <iostream>
 
 #include "src/Board.hpp"
@@ -34,10 +33,7 @@ int main() {
 
     while(true) {
 
-        std::system("clear");
-
-        std::cout << mastHead;
-        std::cout << board;
+        std::cout << "\x1B[2J\x1B[H" << mastHead << board;
 
         Engine engine(&board, 6);
 
