@@ -63,7 +63,7 @@ protected:
 
         if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
 
-            return _evaluation.evaluate(currentBoard);
+            return _evaluation.evaluate(currentBoard, _initialBoard->playerToMove());
         }
 
         while(!moveGenerator.empty()) {
@@ -101,7 +101,7 @@ protected:
 
         if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
 
-            return _evaluation.evaluate(currentBoard);
+            return _evaluation.evaluate(currentBoard, _initialBoard->playerToMove());
         }
 
         while(!moveGenerator.empty()) {
@@ -128,11 +128,7 @@ protected:
 
 public:
 
-    Engine(Board *initialBoard, uint8_t initialDepth) {
-
-        _initialBoard = initialBoard;
-        _initialDepth = initialDepth;
-    }
+    Engine(Board *initialBoard, uint8_t initialDepth) : _initialBoard(initialBoard), _initialDepth(initialDepth) {}
 
 
     Move &getBestMove() {

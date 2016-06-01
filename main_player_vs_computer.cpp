@@ -86,7 +86,7 @@ int main() {
 
             std::cout << "Calculating..." << std::flush;
 
-            Engine engine(&board, 7);
+            Engine engine(&board, 5);
 
             board.applyMove(engine.getBestMove());
         }

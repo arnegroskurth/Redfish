@@ -32,7 +32,7 @@ public:
      * Evaluates a given board state.
      * Positive values indicate a benefit for white, negative for black.
      */
-    FORCE_INLINE int64_t evaluate(Board *board) {
+    FORCE_INLINE int64_t evaluate(Board *board, Player initialPlayer) {
 
         int64_t ret = 0;
 
@@ -42,6 +42,8 @@ public:
         ret += 4 * (SET_BITS_64(board->getWhiteKnightsMask()) - SET_BITS_64(board->getBlackKnightsMask()));
         ret += 3 * (SET_BITS_64(board->getWhiteBishopsMask()) - SET_BITS_64(board->getBlackBishopsMask()));
         ret += 1 * (SET_BITS_64(board->getWhitePawnsMask()) - SET_BITS_64(board->getBlackPawnsMask()));
+
+        ret *= (Player::WHITE == initialPlayer) * 1 + (Player::BLACK == initialPlayer) * -1;
 
         return ret;
     }
