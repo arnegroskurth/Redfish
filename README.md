@@ -4,7 +4,7 @@ Redfish (with reference to the popular stockfish project) is an open-source ches
 
 ## Building & Running ##
 
-There is a makefile in the project root to enable an easy building process.
+There is a makefile in the project root to enable an easy building process in a linux environment.
 
 ```
 cd {PROJECT_DIR}
