@@ -199,6 +199,14 @@ public:
     }
 
 
+    bool isFinalState() const {
+
+        // todo: check for cheque-mate
+
+        return false;
+    }
+
+
     /**
      * Can be used to check for consistency between 0x88 and bitboard representations.
      */
@@ -235,7 +243,9 @@ public:
 
             for(uint8_t column = 0; column < 8; column++) {
 
-                auto it = fenCharacters.find(board.getPieceBySq8x8(63 - (row * 8 + column)));
+                PieceType pieceType = board.getPieceBySq0x88(sq0x88ByRowAndColumn(7 - row, column));
+
+                auto it = fenCharacters.find(pieceType);
 
                 out << " " << ((it == fenCharacters.end()) ? ' ' : it->second) << " +";
             }

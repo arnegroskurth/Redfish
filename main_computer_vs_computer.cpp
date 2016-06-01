@@ -31,7 +31,7 @@ int main() {
     Board board;
     board.reset();
 
-    while(true) {
+    while(!board.isFinalState()) {
 
         std::cout << "\x1B[2J\x1B[H" << mastHead << board;
 
