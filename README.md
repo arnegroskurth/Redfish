@@ -16,6 +16,7 @@ Apart from gcc and libc there are no external dependencies.
 
 ## Todo ##
 
+- Add a lookup table for already evaluated positions
 - Move ordering for faster cutoffs in alpha-beta-pruning
 - Imeplement casteling, pawn-captures and 50-moves-rule
 - Enhance evaluation function
