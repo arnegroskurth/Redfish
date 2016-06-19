@@ -19,4 +19,4 @@ test:
 	$(CC) $(CFLAGS) -o build/test test.cpp $(SOURCES)
 
 clean:
-	rm build/*
+	rm -f build/*
