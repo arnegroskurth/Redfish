@@ -121,6 +121,10 @@ public:
                 incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & board->getOccupiedMask());
                 incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~board->getOtherPlayerPiecesMask());
 
+                // check for empty field in front of pawn
+                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::WHITE_PAWN) && mask8x8BySq8x8(fromSq8x8 + 8) & board->getOccupiedMask());
+                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::BLACK_PAWN) && mask8x8BySq8x8(fromSq8x8 - 8) & board->getOccupiedMask());
+
 
                 // go to next move if valid
                 _totalMoveCount += incrementor;
