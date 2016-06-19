@@ -18,7 +18,7 @@ Apart from gcc and libc there are no external dependencies.
 
 - Add a lookup table for already evaluated positions
 - Move ordering for faster cutoffs in alpha-beta-pruning
-- Imeplement casteling, pawn-captures and 50-moves-rule
+- Implement casteling, pawn-captures and 50-moves-rule
 - Enhance evaluation function
 - Parallize search algorithm
 - Evaluation of user-input (as long as the required format for a move is matched a human player move is considered valid)

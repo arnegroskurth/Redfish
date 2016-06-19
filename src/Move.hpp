@@ -44,6 +44,12 @@ struct Move {
     }
 
 
+    friend bool operator== (const Move &move1, const Move &move2) {
+
+        return move1.fromSq0x88 == move2.fromSq0x88 && move1.toSq0x88 == move2.toSq0x88;
+    }
+
+
     friend std::ostream& operator<< (std::ostream& out, const Move &move) {
 
         out << algebraicByMask8x8(mask8x8BySq0x88(move.fromSq0x88)) << ":" << algebraicByMask8x8(mask8x8BySq0x88(move.toSq0x88));

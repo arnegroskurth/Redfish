@@ -161,11 +161,38 @@ public:
 
 
     /**
+     * Rewind streaming interface
+     */
+    FORCE_INLINE void rewind() {
+
+        this->_currentMove = 0;
+    }
+
+
+    /**
      * @return Total count of possible moves that have been generated.
      */
     FORCE_INLINE TMovesArray::size_type getTotalMoveCount() const {
 
         return _totalMoveCount;
+    }
+
+
+    /**
+     * @return
+     */
+    FORCE_INLINE bool hasMove(Move &move) {
+
+        this->rewind();
+
+        while(!this->empty()) {
+
+            if(**this == move) return true;
+
+            ++(*this);
+        }
+
+        return false;
     }
 
 

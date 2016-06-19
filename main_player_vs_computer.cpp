@@ -39,13 +39,16 @@ int main() {
     std::regex expression("^([a-h][1-8]):([a-h][1-8])$");
     std::smatch expressionMatch;
 
-    while(!board.isFinalState()) {
+    // repeat until a final game state is reached
+    do {
 
         std::cout << "\x1B[2J\x1B[H" << mastHead << board;
 
         if(board.whiteToMove()) {
 
-            Move move;
+            MoveGenerator moveGenerator(&board);
+
+            Move playerMove;
 
             // read move and validate until valid move
             do {
@@ -64,22 +67,20 @@ int main() {
                     uint8_t toColumn = to[0] - 97;
                     uint8_t toRow = to[1] - 49;
 
-                    move.fromSq0x88 = sq0x88ByRowAndColumn(fromRow, fromColumn);
-                    move.toSq0x88 = sq0x88ByRowAndColumn(toRow, toColumn);
+                    playerMove.fromSq0x88 = sq0x88ByRowAndColumn(fromRow, fromColumn);
+                    playerMove.toSq0x88 = sq0x88ByRowAndColumn(toRow, toColumn);
 
-                    move.movingPieceType = board.getPieceBySq0x88(move.fromSq0x88);
-                    move.capturedPieceType = board.getPieceBySq0x88(move.toSq0x88);
+                    playerMove.movingPieceType = board.getPieceBySq0x88(playerMove.fromSq0x88);
+                    playerMove.capturedPieceType = board.getPieceBySq0x88(playerMove.toSq0x88);
 
-                    // invalid move.
-                    if(GET_PLAYER(move.movingPieceType) != board.playerToMove()) continue;
 
-                    // break loop
-                    break;
+                    // break loop if valid move given
+                    if(moveGenerator.hasMove(playerMove)) break;
                 }
             }
             while(true);
 
-            board.applyMove(move);
+            board.applyMove(playerMove);
         }
 
         else {
@@ -91,6 +92,7 @@ int main() {
             board.applyMove(engine.getBestMove());
         }
     }
+    while(!board.isFinalState());
 
     return 0;
 }
