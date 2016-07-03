@@ -34,7 +34,7 @@ protected:
 
     Evaluation _evaluation;
 
-    Board *_initialBoard;
+    Board &_initialBoard;
     uint8_t _initialDepth;
 
     Move _bestMove;
@@ -47,7 +47,7 @@ protected:
      */
     FORCE_INLINE void findBestMove() {
 
-        if(_initialBoard->whiteToMove()) {
+        if(_initialBoard.whiteToMove()) {
 
             max(_initialBoard, _initialDepth, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
         }
@@ -61,7 +61,7 @@ protected:
     /**
      * Alpha-Beta-Pruning
      */
-    HOT int64_t max(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
+    HOT int64_t max(Board &currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
 
         MoveGenerator moveGenerator;
         Board nextBoard;
@@ -74,7 +74,7 @@ protected:
 
         while(!moveGenerator.empty()) {
 
-            new (&nextBoard) Board(*currentBoard);
+            new (&nextBoard) Board(currentBoard);
             nextBoard.applyMove(*moveGenerator);
 
 
@@ -87,7 +87,7 @@ protected:
 
                 if(it == _knownPositions.end()) {
 
-                    minValue = min(&nextBoard, depth - 1, maxValue, beta);
+                    minValue = min(nextBoard, depth - 1, maxValue, beta);
 
                     _knownPositions[hash] = minValue;
                 }
@@ -99,7 +99,7 @@ protected:
 
             else {
 
-                minValue = min(&nextBoard, depth - 1, maxValue, beta);
+                minValue = min(nextBoard, depth - 1, maxValue, beta);
             }
 
 
@@ -123,7 +123,7 @@ protected:
     }
 
 
-    HOT int64_t min(Board *currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
+    HOT int64_t min(Board &currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
 
         MoveGenerator moveGenerator;
         Board nextBoard;
@@ -136,7 +136,7 @@ protected:
 
         while(!moveGenerator.empty()) {
 
-            new (&nextBoard) Board(*currentBoard);
+            new (&nextBoard) Board(currentBoard);
             nextBoard.applyMove(*moveGenerator);
 
 
@@ -149,7 +149,7 @@ protected:
 
                 if(it == _knownPositions.end()) {
 
-                    maxValue = max(&nextBoard, depth - 1, alpha, minValue);
+                    maxValue = max(nextBoard, depth - 1, alpha, minValue);
 
                     _knownPositions[hash] = maxValue;
                 }
@@ -161,7 +161,7 @@ protected:
 
             else {
 
-                maxValue = max(&nextBoard, depth - 1, alpha, minValue);
+                maxValue = max(nextBoard, depth - 1, alpha, minValue);
             }
 
 
@@ -187,7 +187,7 @@ protected:
 
 public:
 
-    Engine(Board *initialBoard, uint8_t initialDepth) : _initialBoard(initialBoard), _initialDepth(initialDepth) {}
+    Engine(Board &initialBoard, uint8_t initialDepth) : _initialBoard(initialBoard), _initialDepth(initialDepth) {}
 
 
     Move &getBestMove() {

@@ -35,9 +35,6 @@ protected:
     typedef std::array<Move, 4096> TMovesArray;
 
 
-    // board the generation is based on
-    Board *_board;
-
     // generated moves to be made accessible via the streaming interface
     TMovesArray _moves;
     TMovesArray::size_type _totalMoveCount = 0;
@@ -62,7 +59,7 @@ public:
 
 
     MoveGenerator() {}
-    FORCE_INLINE MoveGenerator(Board *board) {
+    FORCE_INLINE MoveGenerator(Board &board) {
 
         generateMoves(board);
     }
@@ -77,7 +74,7 @@ public:
      *  - force unroll_loop? (only inner/outer?)
      *  - add piece-traversing version to speed up generation process in end-games
      */
-    FORCE_INLINE UNROLL_LOOPS TMovesArray::size_type generateMoves(Board *board) {
+    FORCE_INLINE UNROLL_LOOPS TMovesArray::size_type generateMoves(Board &board) {
 
         TMovesArray::size_type incrementor;
 
@@ -86,11 +83,11 @@ public:
 
         for(uint8_t fromSq8x8 = 0; fromSq8x8 < 63; fromSq8x8++) {
 
-            PieceType fromPieceType = board->getPieceBySq8x8(fromSq8x8);
+            PieceType fromPieceType = board.getPieceBySq8x8(fromSq8x8);
 
             for(uint8_t toSq8x8 = 0; toSq8x8 < 63; toSq8x8++) {
 
-                PieceType toPieceType = board->getPieceBySq8x8(toSq8x8);
+                PieceType toPieceType = board.getPieceBySq8x8(toSq8x8);
                 uint64_t toMask8x8 = mask8x8BySq8x8(toSq8x8);
 
 
@@ -111,19 +108,19 @@ public:
                 incrementor = incrementor >> (fromSq8x8 == toSq8x8);
 
                 // fromPieceType has to be of current player
-                incrementor = incrementor >> (board->playerToMove() != GET_PLAYER(fromPieceType));
+                incrementor = incrementor >> (board.playerToMove() != GET_PLAYER(fromPieceType));
 
                 // targetPiece is not of current player
-                incrementor = incrementor >> (board->playerToMove() == GET_PLAYER(toPieceType));
+                incrementor = incrementor >> (board.playerToMove() == GET_PLAYER(toPieceType));
 
                 // as valid move in jump tables
                 incrementor = incrementor >> HAS_SET_BITS_64((~_jumpTable[fromSq8x8][fromPieceType]) & toMask8x8);
-                incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & board->getOccupiedMask());
-                incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~board->getOtherPlayerPiecesMask());
+                incrementor = incrementor >> HAS_SET_BITS_64(_emptyMaskTable[fromSq8x8][toSq8x8] & board.getOccupiedMask());
+                incrementor = incrementor >> HAS_SET_BITS_64(_opponentRequiredMaskTable[fromSq8x8][fromPieceType] & toMask8x8 & ~board.getOtherPlayerPiecesMask());
 
                 // check for empty field in front of pawn
-                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::WHITE_PAWN) && mask8x8BySq8x8(fromSq8x8 + 8) & board->getOccupiedMask());
-                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::BLACK_PAWN) && mask8x8BySq8x8(fromSq8x8 - 8) & board->getOccupiedMask());
+                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::WHITE_PAWN) && mask8x8BySq8x8(fromSq8x8 + 8) & board.getOccupiedMask());
+                incrementor = incrementor >> HAS_SET_BITS_64((fromPieceType == PieceType::BLACK_PAWN) && mask8x8BySq8x8(fromSq8x8 - 8) & board.getOccupiedMask());
 
 
                 // go to next move if valid
