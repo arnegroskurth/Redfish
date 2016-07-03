@@ -56,17 +56,48 @@ protected:
     // 4    black king in cheque
     uint8_t _bitfield;
 
+    // move number starting with 1
+    uint64_t _moveNumber;
+
+    // board hash
+    uint64_t _hash;
+
+
+    // computes and sets board hash obtained with Zobrist hashing
+    FORCE_INLINE UNROLL_LOOPS void computeHash() {
+
+        _hash = 0;
+
+        for(uint8_t sq8x8 = 0; sq8x8 < 64; sq8x8++) {
+
+            _hash ^= _hashTable[sq8x8][this->getPieceBySq8x8(sq8x8)];
+        }
+
+        _hash ^= static_cast<uint64_t>(_player);
+    }
+
+
+    // hash table
+    static std::array<std::array<uint64_t, 13>, 64> _hashTable;
+
 
 public:
 
-    Board() {}
+    /**
+     * Initialize hashTable
+     */
+    static void initialize();
 
+
+    FORCE_INLINE Board() {}
     FORCE_INLINE Board(const Board &other) {
         
         _bitboards = other._bitboards;
         _0x88 = other._0x88;
         _player = other._player;
         _bitfield = other._bitfield;
+        _moveNumber = other._moveNumber;
+        _hash = other._hash;
     }
 
     FORCE_INLINE uint64_t getWhiteMask() const { return _bitboards[7]; }
@@ -113,6 +144,10 @@ public:
     FORCE_INLINE bool whiteToMove() const { return IS_WHITE(_player); }
     FORCE_INLINE bool blackToMove() const { return IS_BLACK(_player); }
 
+    FORCE_INLINE uint64_t getMoveNumber() const { return _moveNumber; }
+
+    FORCE_INLINE uint64_t getHash() const { return _hash; }
+
 
     /**
      * Applies given move to the current board state.
@@ -144,6 +179,11 @@ public:
         _bitboards[15] &= ~toMask8x8;
 
         _player = GET_OTHER_PLAYER(_player);
+
+        ++_moveNumber;
+
+        // todo: replace with (cheaper) update function
+        computeHash();
 
 
         if(verifyAfterwards) verify();
@@ -195,7 +235,11 @@ public:
 
         _player = Player::WHITE;
 
+        _moveNumber = 1;
+
         // todo: init bitfield
+
+        computeHash();
     }
 
 
@@ -252,6 +296,8 @@ public:
 
             out << std::endl << "   +---+---+---+---+---+---+---+---+" << std::endl;
         }
+
+        out << "Move number: " << board.getMoveNumber() << std::endl;
 
         return out;
     }

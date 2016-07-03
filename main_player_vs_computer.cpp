@@ -27,6 +27,7 @@
 
 int main() {
 
+    Board::initialize();
     MoveGenerator::initialize();
 
 
@@ -87,7 +88,7 @@ int main() {
 
             std::cout << "Calculating..." << std::flush;
 
-            Engine engine(&board, 5);
+            Engine<> engine(&board, 6);
 
             board.applyMove(engine.getBestMove());
         }

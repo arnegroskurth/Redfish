@@ -135,6 +135,18 @@ enum DirectionDelta0x88 : uint8_t {
 
 
 /**
+ * Returns an index for every piece type.
+ * 0:       PieceType::NONE
+ * 1-7:     PieceType::WHITE
+ * 8-14:    PieceType::BLACK
+ */
+FORCE_INLINE uint8_t getPieceIndex(PieceType piece) {
+
+    return (piece & pieceTypeMask) + (0b00000110 >> ((!HAS_SET_BITS_8(piece & Player::BLACK)) << 8));
+}
+
+
+/**
  * Headline that gets shown on startup
  */
 const std::string mastHead =

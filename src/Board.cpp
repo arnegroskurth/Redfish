@@ -16,28 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
+#include "Board.hpp"
 
-#include "src/Board.hpp"
-#include "src/Engine.hpp"
-#include "src/MoveGenerator.hpp"
-
-
-int main() {
-
-    Board::initialize();
-    MoveGenerator::initialize();
+#include <chrono>
+#include <cstring>
+#include <random>
 
 
-    Board board;
-    board.reset();
+std::array<std::array<uint64_t, 13>, 64> Board::_hashTable;
 
-    while(!board.isFinalState()) {
 
-        std::cout << "\x1B[2J\x1B[H" << mastHead << board;
+void Board::initialize() {
 
-        Engine<> engine(&board, 6);
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937_64 randomNumberEngine(seed);
 
-        board.applyMove(engine.getBestMove());
+    std::memset(&_hashTable, 0, sizeof(_hashTable));
+
+    for(int i = 0; i < 64; i++) {
+
+        for(int j = 1; j < 13; j++) {
+
+            _hashTable[i][j] = randomNumberEngine();
+        }
     }
 }

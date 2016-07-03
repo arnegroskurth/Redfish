@@ -14,15 +14,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Todo:
- *  - Implement/compare NegaScout/MTD-f search algorithms
- *  - Use transposition table
  */
 
 #pragma once
 
 #include <limits>
+#include <map>
 
 #include "Board.hpp"
 #include "Constants.hpp"
@@ -30,7 +27,7 @@
 #include "Move.hpp"
 #include "MoveGenerator.hpp"
 
-
+template<bool useLookupTable = true>
 class Engine {
 
 protected:
@@ -42,13 +39,22 @@ protected:
 
     Move _bestMove;
 
+    std::map<uint64_t, int64_t> _knownPositions;
+
 
     /**
      * Initial call to finding
      */
     FORCE_INLINE void findBestMove() {
 
-        Engine::max(_initialBoard, _initialDepth, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
+        if(_initialBoard->whiteToMove()) {
+
+            max(_initialBoard, _initialDepth, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
+        }
+        else {
+
+            min(_initialBoard, _initialDepth, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
+        }
     }
 
 
@@ -63,7 +69,7 @@ protected:
 
         if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
 
-            return _evaluation.evaluate(currentBoard, _initialBoard->playerToMove());
+            return _evaluation.evaluate(currentBoard);
         }
 
         while(!moveGenerator.empty()) {
@@ -71,7 +77,31 @@ protected:
             new (&nextBoard) Board(*currentBoard);
             nextBoard.applyMove(*moveGenerator);
 
-            auto minValue = Engine::min(&nextBoard, depth - 1, maxValue, beta);
+
+            int64_t minValue;
+
+            if(useLookupTable) {
+
+                auto hash = nextBoard.getHash() ^ static_cast<uint64_t>(depth);
+                auto it = _knownPositions.find(hash);
+
+                if(it == _knownPositions.end()) {
+
+                    minValue = min(&nextBoard, depth - 1, maxValue, beta);
+
+                    _knownPositions[hash] = minValue;
+                }
+                else {
+
+                    minValue = it->second;
+                }
+            }
+
+            else {
+
+                minValue = min(&nextBoard, depth - 1, maxValue, beta);
+            }
+
 
             if(minValue > maxValue) {
 
@@ -101,7 +131,7 @@ protected:
 
         if(depth == 0 || moveGenerator.generateMoves(currentBoard) == 0) {
 
-            return _evaluation.evaluate(currentBoard, _initialBoard->playerToMove());
+            return _evaluation.evaluate(currentBoard);
         }
 
         while(!moveGenerator.empty()) {
@@ -109,7 +139,31 @@ protected:
             new (&nextBoard) Board(*currentBoard);
             nextBoard.applyMove(*moveGenerator);
 
-            auto maxValue = Engine::max(&nextBoard, depth - 1, alpha, minValue);
+
+            int64_t maxValue;
+
+            if(useLookupTable) {
+
+                auto hash = nextBoard.getHash() ^ static_cast<uint64_t>(depth);
+                auto it = _knownPositions.find(hash);
+
+                if(it == _knownPositions.end()) {
+
+                    maxValue = max(&nextBoard, depth - 1, alpha, minValue);
+
+                    _knownPositions[hash] = maxValue;
+                }
+                else {
+
+                    maxValue = it->second;
+                }
+            }
+
+            else {
+
+                maxValue = max(&nextBoard, depth - 1, alpha, minValue);
+            }
+
 
             if(maxValue < minValue) {
 
@@ -117,6 +171,11 @@ protected:
 
                 // alpha cutoff
                 if(minValue <= alpha) break;
+
+                if(depth == _initialDepth) {
+
+                    new (&_bestMove) Move(*moveGenerator);
+                }
             }
 
             ++moveGenerator;

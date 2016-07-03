@@ -23,6 +23,7 @@ Apart from gcc and libc there are no external dependencies.
 - Validate pawn movements in general
 - Enhance evaluation function
 - Parallize search algorithm
+- Implement engine as template with configurable features and add performance tests
 
 ## License ##
 
