@@ -19,14 +19,15 @@
 #include <iostream>
 
 #include "src/Board.hpp"
-#include "src/MoveGenerator.hpp"
+#include "src/SortedMoveGenerator.hpp"
 
 
 int main() {
 
     std::cout << mastHead;
 
-    MoveGenerator::initialize();
+    Board::initialize();
+    SortedMoveGenerator::initialize();
 
 
     Board board;
@@ -35,7 +36,8 @@ int main() {
     std::cout << board;
 
 
-    MoveGenerator moveGenerator(&board);
+    MoveGenerator moveGenerator;
+    moveGenerator.generateMoves(board);
 
 
     std::cout << "Total move count: " << moveGenerator.getTotalMoveCount() << std::endl;

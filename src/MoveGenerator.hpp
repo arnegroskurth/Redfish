@@ -58,13 +58,6 @@ public:
     static void initialize();
 
 
-    MoveGenerator() {}
-    FORCE_INLINE MoveGenerator(Board &board) {
-
-        generateMoves(board);
-    }
-
-
     /**
      * Generates all pseudo-legal moves.
      *

@@ -12,6 +12,7 @@
 #include "src/Move.hpp"
 #include "src/MoveGenerator.hpp"
 #include "src/PositionMath.hpp"
+#include "src/SortedMoveGenerator.hpp"
 
 using namespace std::chrono;
 
@@ -19,7 +20,7 @@ using namespace std::chrono;
 int main() {
 
     Board::initialize();
-    MoveGenerator::initialize();
+    SortedMoveGenerator::initialize();
 
     Board board;
     board.reset();
@@ -28,8 +29,8 @@ int main() {
 
         std::cout << "\x1B[2J\x1B[H" << mastHead << board;
 
-        Engine<true> engine1(board, 5);
-        Engine<false> engine2(board, 5);
+        Engine<true> engine1(board, 6);
+        Engine<false> engine2(board, 6);
 
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
         Move move1 = engine1.getBestMove();

@@ -25,7 +25,8 @@
 #include "Constants.hpp"
 #include "Evaluation.hpp"
 #include "Move.hpp"
-#include "MoveGenerator.hpp"
+#include "SortedMoveGenerator.hpp"
+
 
 template<bool useLookupTable = true>
 class Engine {
@@ -63,7 +64,7 @@ protected:
      */
     HOT int64_t max(Board &currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
 
-        MoveGenerator moveGenerator;
+        SortedMoveGenerator moveGenerator;
         Board nextBoard;
         auto maxValue = alpha;
 
@@ -125,7 +126,7 @@ protected:
 
     HOT int64_t min(Board &currentBoard, uint8_t depth, int64_t alpha, int64_t beta) {
 
-        MoveGenerator moveGenerator;
+        SortedMoveGenerator moveGenerator;
         Board nextBoard;
         auto minValue = beta;
 

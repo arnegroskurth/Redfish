@@ -16,15 +16,12 @@ Apart from gcc and libc there are no external dependencies.
 
 ## Todo ##
 
-- Add a lookup table for already evaluated positions
-- Move ordering for faster cutoffs in alpha-beta-pruning
 - Implement casteling, en-passent pawn-captures and 50-moves-rule
 - Implement pawn replacement
 - Validate pawn movements in general
-- Enhance evaluation function
 - Parallize search algorithm
 - Implement engine as template with configurable features and add performance tests
 
 ## License ##
 
-Redfish is licensed under the GNU General Public License v3.0.
+Redfish is licensed under the GNU General Public License v3.0. See LICENSE.txt for details.

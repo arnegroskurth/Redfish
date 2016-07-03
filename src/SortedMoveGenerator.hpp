@@ -16,28 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
+#pragma once
 
-#include "src/Board.hpp"
-#include "src/Engine.hpp"
-#include "src/SortedMoveGenerator.hpp"
+#include <algorithm>
+#include <iterator>
 
-
-int main() {
-
-    Board::initialize();
-    SortedMoveGenerator::initialize();
+#include "Move.hpp"
+#include "MoveGenerator.hpp"
 
 
-    Board board;
-    board.reset();
+class SortedMoveGenerator : public MoveGenerator {
 
-    while(!board.isFinalState()) {
+public:
 
-        std::cout << "\x1B[2J\x1B[H" << mastHead << board;
+    FORCE_INLINE TMovesArray::size_type generateMoves(Board &board) {
 
-        Engine<> engine(board, 6);
+        MoveGenerator::generateMoves(board);
 
-        board.applyMove(engine.getBestMove());
+        std::sort(_moves.begin(), std::next(_moves.begin(), _totalMoveCount), [](const Move &move1, const Move &move2) {
+
+            return move1.capturedPieceType < move2.capturedPieceType;
+        });
+
+        return _totalMoveCount;
     }
-}
+};

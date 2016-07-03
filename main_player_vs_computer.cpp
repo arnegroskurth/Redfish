@@ -22,13 +22,13 @@
 
 #include "src/Board.hpp"
 #include "src/Engine.hpp"
-#include "src/MoveGenerator.hpp"
+#include "src/SortedMoveGenerator.hpp"
 
 
 int main() {
 
     Board::initialize();
-    MoveGenerator::initialize();
+    SortedMoveGenerator::initialize();
 
 
     Board board;
@@ -36,6 +36,7 @@ int main() {
 
     std::string playerMoveString;
     Move lastMove;
+    SortedMoveGenerator moveGenerator;
 
     std::regex expression("^([a-h][1-8]):([a-h][1-8])$");
     std::smatch expressionMatch;
@@ -47,7 +48,7 @@ int main() {
 
         if(board.whiteToMove()) {
 
-            MoveGenerator moveGenerator(&board);
+            moveGenerator.generateMoves(board);
 
             Move playerMove;
 
@@ -88,7 +89,7 @@ int main() {
 
             std::cout << "Calculating..." << std::flush;
 
-            Engine<> engine(&board, 6);
+            Engine<> engine(board, 6);
 
             board.applyMove(engine.getBestMove());
         }
