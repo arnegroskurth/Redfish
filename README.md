@@ -16,9 +16,8 @@ Apart from gcc and libc there are no external dependencies.
 
 - Implement casteling, en-passent pawn-captures and 50-moves-rule
 - Implement pawn replacement
-- Validate pawn movements in general
-- Parallize search algorithm
-- Implement engine as template with configurable features and add performance tests
+- Validate pawn movements as there seem to be some bugs
+- Parallelize search algorithm (OpenMP/MPI/OpenCL)
 
 ## License ##
 
